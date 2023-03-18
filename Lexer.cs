@@ -248,6 +248,18 @@ namespace PascalCompilerr
                 case "do":
                     AddToken(Token.TypeToken.DO);
                     break;
+                case "break":
+                    AddToken(Token.TypeToken.BREAK);
+                    break;
+                case "continue":
+                    AddToken(Token.TypeToken.CONTINUE);
+                    break;
+                case "repeat":
+                    AddToken(Token.TypeToken.REPEAT);
+                    break;
+                case "until":
+                    AddToken(Token.TypeToken.UNTIL);
+                    break;
                 default:
                     AddToken(Token.TypeToken.WORD, word);
                     break;

@@ -1,20 +1,4 @@
-﻿X := 100 + 300 // будет равно 400
-Y := 50 + (X - 2)
-str := "Mama" * 4 + "Papa" * 2
-write("X = " + X + "\n")
-writeln("Y = " + Y)
-writeln(str) 
-Y := 1000 + Y
-writeln("Y = " + Y)
-
-X := Y
-writeln("X = " + X)
-if ("a" == "b") then
-	writeln("True")
-else
- 	writeln("False")
-
-if (40 <= 50 or 50 >= 60) then
+﻿if (40 <= 50 or 50 >= 60) then
 begin
 	writeln(5)
 	writeln("YEEEEEES")
@@ -27,8 +11,17 @@ else
 	writeln("NOOOOO")
 
 i := 0
-n := 10
-while (i < 10 + n) do begin
-	writeln("i = " + i)
+while (i < 10) do begin
 	i := i + 1
+	if (i == 4) then
+		continue
+	writeln("i = " + i)
 end
+
+i := 0
+repeat
+	begin
+		i := i + 1
+		writeln("i = " + i)
+	end
+until (i < 10)

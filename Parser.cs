@@ -232,13 +232,83 @@ namespace PascalCompilerr
         {
             while (boolean.evaluate().AsNumber() != 0)
             {
-                statement.execute();
+                try
+                {
+                    statement.execute();
+                }
+                catch (BreakStatement)
+                {
+                    break;
+                }
+                catch (ContinueStatement)
+                {
+                    //continue;
+                }
             }
         }
 
         public override string ToString()
         {
             return "while " + boolean + " do " + statement;
+        }
+    }
+    public class RepeatUntilStatement : IStatement
+    {
+        private readonly IExpression boolean;
+        private readonly IStatement statement;
+
+        public RepeatUntilStatement(IExpression boolean, IStatement statement)
+        {
+            this.boolean = boolean;
+            this.statement = statement;
+        }
+
+        public void execute()
+        {
+            do
+            {
+                try
+                {
+                    statement.execute();
+                }
+                catch (BreakStatement)
+                {
+                    break;
+                }
+                catch (ContinueStatement)
+                {
+                    //continue;
+                }
+            }
+            while (boolean.evaluate().AsNumber() != 0);
+        }
+
+        public override string ToString()
+        {
+            return "repeat " + statement + " until " + boolean;
+        }
+    }
+    public class BreakStatement : Exception, IStatement
+    {
+        public void execute()
+        {
+            throw this;
+        }
+        public override string ToString()
+        {
+            return "break";
+        }
+    }
+
+    public class ContinueStatement : Exception, IStatement
+    {
+        public void execute()
+        {
+            throw this;
+        }
+        public override string ToString()
+        {
+            return "continue";
         }
     }
 
@@ -592,9 +662,21 @@ namespace PascalCompilerr
             {
                 return ifElseStatement();
             }
+            if (Match(Token.TypeToken.BREAK))
+            {
+                return new BreakStatement();
+            }
+            if (Match(Token.TypeToken.CONTINUE))
+            {
+                return new ContinueStatement();
+            }
             if (Match(Token.TypeToken.WHILE))
             {
                 return whileStatement();
+            }
+            if (Match(Token.TypeToken.REPEAT))
+            {
+                return repeatUntilStatement();
             }
             return assignmentStatement();
         }
@@ -647,6 +729,15 @@ namespace PascalCompilerr
             IStatement statement = statementOrBlock();
             return new WhileStatement(boolean, statement);
            
+        }
+
+        private IStatement repeatUntilStatement()
+        {
+            IStatement statement = statementOrBlock();
+            Consume(Token.TypeToken.UNTIL);
+            IExpression boolean = expression();
+            return new RepeatUntilStatement(boolean, statement);
+
         }
         private IExpression expression()
         {

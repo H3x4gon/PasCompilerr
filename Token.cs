@@ -26,6 +26,10 @@ namespace PascalCompilerr
             WHILE,
             FOR,
             DO,
+            REPEAT,
+            UNTIL,
+            BREAK,
+            CONTINUE,
             
 
             //Операторы
